@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<widget appId="10090017" height="480" sreensize="4.5" version="00.00.0015" widgetId="" width="320">
+<name>纹绣一点通</name>
+<description/>
+<author email=""> </author>
+<icon src="icon.png"/>
+<license href=""/>
+<content encoding="utf-8" src="main.html"/>
+<updateurl>http://www.51wxs.com/app/upgrade.php</updateurl>
+<logserverip>192.168.1.104</logserverip> 
+<showmyspace>false</showmyspace>
+<obfuscation>false</obfuscation>
+<bgcolor/>
+<orientation>9</orientation>
+</widget>

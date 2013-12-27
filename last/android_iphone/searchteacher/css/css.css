@@ -1,0 +1,79 @@
+.ui-bar-top {
+	border:0px;
+	color:#FFF;
+	background-image: -webkit-linear-gradient(top, #333, #222);
+	background-image: linear-gradient(top, #333, #222)
+}
+
+.ui-title-img {
+    border:0px;
+    width:140px;
+    margin:0 auto;
+    text-align:center;
+}
+.ui-body-bg {
+    border:0px;
+    background:#f2f2f2;
+    text-show:0 1px 0 #fff;
+    layer-background-color:#f2f2f2;
+}
+
+.ui-body-book_bg {
+    border:0px;
+    color:#FFF;
+	background-image: -webkit-linear-gradient(top, #fff, #cde4f2);
+	background-image: linear-gradient(top, #fff, #cde4f2);
+    text-show:0 1px 0 #fff;
+    layer-background-color:#f2f2f2;
+}
+
+.logo {
+    width:120px;
+    height:120px;
+    margin:0 auto;
+    margin-top:20px;
+    border:o;
+}
+
+.book_logo {
+	margin:0 auto; 
+	width:240px; 
+	padding:0; 
+	border:0px; 
+	margin-top:20px;
+	margin-bottom:10px;
+}
+
+.book_logo img {
+	max-width:230px; 
+	width:expression(document.body.clientWidth>document.getElementByclass("book_logo").scrollWidth*9/10? "230px": "auto" );
+	border:0px; 
+}
+
+.anniu {
+    width:200px;
+    height:50px;
+    margin:0 auto;
+    margin-top:30px;
+    border:0;
+}
+ .margin {
+    margin-bottom:5px;
+ }
+ 
+ .ui-input-date {
+    background-image:none;
+    padding-left:0.4em;
+    line-height:1.4em;
+    font-size:0.8em;
+    display:block;
+    height:25px;
+    width:90%;
+    text-valign:middle;
+    color:#000;
+ }
+
+.ui-fenguan {
+    width:90%;
+    margin:0 auto;
+}

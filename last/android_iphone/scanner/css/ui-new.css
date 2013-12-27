@@ -1,0 +1,5 @@
+.sm_img{
+	background: url(../images/sm_img.png) 0 0 no-repeat;
+	-webkit-background-size: cover;
+	background-size: cover;
+}

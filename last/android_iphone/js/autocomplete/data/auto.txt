@@ -1,0 +1,1 @@
+[["xiamen","厦门"],["quanzhou","泉州"],["fuzhou","福州"],["longyan","龙岩"],["sanming","三明"],["jinjiang","晋江"]]
